@@ -20,9 +20,9 @@ This is a Blender addon that allows you to easily integrate .pskx models and .pn
 
 ### Notes
 
-* This add-on relies on the .props.txt file.
+* This addon relies on the .props.txt file.
 * Ambient Occlusion is only supported in Blender 4.2 and above.
-* Currently, the import of RMH (Roughness, Metallic, Ambient Occlusion) materials is disabled in this version of the addon.
+    * Currently, the import of RMH (Roughness, Metallic, Ambient Occlusion) materials is disabled in this version of the addon.
 If you want to enable it, simply edit the addon script and uncomment the related lines.
 
 ## Version History
