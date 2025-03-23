@@ -6,7 +6,7 @@ Blender Addon for Integrating UModel .pskx and .png Exports.
 
 This is a Blender addon that allows you to easily integrate .pskx models and .png textures exported from UModel (UE Viewer).
 
-## Getting Started
+## How to Use
 
 * Import your .pskx model into Blender
 * Press the N key to open the UI panel
