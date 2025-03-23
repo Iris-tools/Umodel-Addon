@@ -12,7 +12,7 @@ This is a Blender addon that allows you to easily integrate .pskx models and .pn
 * Press the N key to open the UI panel
 * Select your unpacked root directory
 * Select the models you want to process (multi-selection is supported)
-* Click Apply Materials to automatically apply textures to the models
+* Click "Apply Materials" to automatically apply textures to the models
 
 ### Supported Blender Version
 
@@ -20,6 +20,7 @@ This is a Blender addon that allows you to easily integrate .pskx models and .pn
 
 ### Notes
 
+* This add-on relies on the .props.txt file.
 * Ambient Occlusion is only supported in Blender 4.2 and above.
 * Currently, the import of RMH (Roughness, Metallic, Ambient Occlusion) materials is disabled in this version of the addon.
 If you want to enable it, simply edit the addon script and uncomment the related lines.
