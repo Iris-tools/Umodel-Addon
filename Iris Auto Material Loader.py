@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Auto Apply Material from Props",
     "author": "Iris",
-    "version": (1, 1),
+    "version": (1, 0),
     "blender": (2, 83, 6),
     "location": "View3D > Tool Shelf",
     "description": "Apply materials to selected objects based on .props.txt files and textures",
