@@ -27,5 +27,5 @@ If you want to enable it, simply edit the addon script and uncomment the related
 
 ## Version History
 
-* ```1.1```
+* ```1.0```
     * Initial Release
