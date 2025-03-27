@@ -16,7 +16,7 @@ This is a Blender addon that allows you to easily integrate ```.pskx``` models a
 
 * Import your ```.pskx``` model into Blender
 * Press the ```N key``` to open the UI panel
-* Select your unpacked root directory
+* Select your unpacked root directory (It will recursively search through all subfolders)
 * Select the models you want to process (multi-selection is supported)
 * Click ```Apply Materials``` to automatically apply textures to the models
 
