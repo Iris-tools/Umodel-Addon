@@ -87,7 +87,7 @@ def create_or_update_material(obj, mat_slot_name, tex_dict, root_path):
             links.new(tex_node.outputs[0], normal_map.inputs[1])
             links.new(normal_map.outputs[0], bsdf.inputs['Normal'])
 
-    # (Optional) Handle RMH map: Separate RGB to Roughness, Metallic, Height
+    # (Optional) Handle RMH map: Separate RGB to Roughness, Metallic, Ambient Occlusion
     # if 'RMHMap' in tex_dict:
     #     rmh_path = find_file_recursively(root_path, tex_dict['RMHMap'])
     #     if rmh_path:
