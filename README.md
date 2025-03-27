@@ -1,4 +1,4 @@
-# Umodel-Addon
+# Auto Material Loader
 
 Blender Addon for Integrating UModel ```.pskx``` and ```.png``` Exports.
 
