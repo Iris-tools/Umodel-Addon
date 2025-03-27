@@ -6,7 +6,7 @@ Blender Addon for Integrating UModel ```.pskx``` and ```.png``` Exports.
 
 This is a Blender addon that allows you to easily integrate ```.pskx``` models and ```.png``` textures exported from UModel (UE Viewer).
 
-### How it works:
+### How it works
 
 * Get ```material slot name``` to find the corresponding ```.props.txt```
 * Get ```material name``` to find the corresponding ```.png```
