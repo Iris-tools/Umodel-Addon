@@ -15,6 +15,7 @@ import json
 from bpy.props import StringProperty
 from bpy.types import Operator, Panel
 
+# Parse the .props.txt file to extract texture names
 def parse_props_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -32,12 +33,14 @@ def parse_props_file(file_path):
                 texture_names[key] = tex_name + '.png'
     return texture_names
 
+# Recursively search for a file within the directory tree
 def find_file_recursively(root_dir, target_filename):
     for dirpath, _, filenames in os.walk(root_dir):
         if target_filename in filenames:
             return os.path.join(dirpath, target_filename)
     return None
 
+# Create or update a material using texture information from props and link nodes to BSDF
 def create_or_update_material(obj, mat_slot_name, tex_dict, root_path):
     mat = bpy.data.materials.get(mat_slot_name)
     if mat is None:
@@ -46,9 +49,11 @@ def create_or_update_material(obj, mat_slot_name, tex_dict, root_path):
     nodes = mat.node_tree.nodes
     links = mat.node_tree.links
 
+    # Clear existing nodes
     for node in nodes:
         nodes.remove(node)
 
+    # Create BSDF and Output nodes
     bsdf = nodes.new(type="ShaderNodeBsdfPrincipled")
     bsdf.location = (0, 0)
 
@@ -56,6 +61,7 @@ def create_or_update_material(obj, mat_slot_name, tex_dict, root_path):
     output.location = (300, 0)
     links.new(bsdf.outputs[0], output.inputs[0])
 
+    # Helper function to create and place image texture nodes
     def add_image_texture_node(label, image_path, loc):
         img = bpy.data.images.load(image_path, check_existing=True)
         tex_node = nodes.new(type="ShaderNodeTexImage")
@@ -64,12 +70,14 @@ def create_or_update_material(obj, mat_slot_name, tex_dict, root_path):
         tex_node.location = loc
         return tex_node
 
+    # Handle Base Color map
     if 'BaseColorMap' in tex_dict:
         base_path = find_file_recursively(root_path, tex_dict['BaseColorMap'])
         if base_path:
             node = add_image_texture_node("BaseColor", base_path, (-400, 200))
             links.new(node.outputs[0], bsdf.inputs['Base Color'])
 
+    # Handle Normal map
     if 'NormalMap' in tex_dict:
         normal_path = find_file_recursively(root_path, tex_dict['NormalMap'])
         if normal_path:
@@ -79,18 +87,20 @@ def create_or_update_material(obj, mat_slot_name, tex_dict, root_path):
             links.new(tex_node.outputs[0], normal_map.inputs[1])
             links.new(normal_map.outputs[0], bsdf.inputs['Normal'])
 
-    #if 'RMHMap' in tex_dict:
-    #    rmh_path = find_file_recursively(root_path, tex_dict['RMHMap'])
-    #    if rmh_path:
-    #        rmh_node = add_image_texture_node("RMH", rmh_path, (-400, -200))
-    #        sep = nodes.new(type="ShaderNodeSeparateRGB")
-    #        sep.location = (-200, -200)
-    #        links.new(rmh_node.outputs[0], sep.inputs[0])
-    #        links.new(sep.outputs['R'], bsdf.inputs['Roughness'])
-    #        links.new(sep.outputs['G'], bsdf.inputs['Metallic'])
+    # (Optional) Handle RMH map: Separate RGB to Roughness, Metallic, Height
+    # if 'RMHMap' in tex_dict:
+    #     rmh_path = find_file_recursively(root_path, tex_dict['RMHMap'])
+    #     if rmh_path:
+    #         rmh_node = add_image_texture_node("RMH", rmh_path, (-400, -200))
+    #         sep = nodes.new(type="ShaderNodeSeparateRGB")
+    #         sep.location = (-200, -200)
+    #         links.new(rmh_node.outputs[0], sep.inputs[0])
+    #         links.new(sep.outputs['R'], bsdf.inputs['Roughness'])
+    #         links.new(sep.outputs['G'], bsdf.inputs['Metallic'])
 
     return mat
 
+# Operator that applies materials to selected mesh objects
 class ApplyMaterialsOperator(Operator):
     bl_idname = "object.apply_materials_from_props"
     bl_label = "Apply Materials"
@@ -114,6 +124,7 @@ class ApplyMaterialsOperator(Operator):
                 slot.material = mat
         return {'FINISHED'}
 
+# UI Panel shown in 3D View > Sidebar > Material Tools tab
 class MaterialToolsPanel(Panel):
     bl_label = "Material Auto Loader"
     bl_idname = "VIEW3D_PT_material_auto_loader"
@@ -123,14 +134,16 @@ class MaterialToolsPanel(Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.prop(context.scene, "mat_root_path")
+        layout.prop(context.scene, "mat_root_path")  # Folder input for root directory
         layout.operator("object.apply_materials_from_props", text="Apply Materials")
 
+# Register classes and add custom property to Scene
 def register():
     bpy.utils.register_class(ApplyMaterialsOperator)
     bpy.utils.register_class(MaterialToolsPanel)
     bpy.types.Scene.mat_root_path = StringProperty(name="Root Folder", subtype='DIR_PATH')
 
+# Unregister classes and remove custom property
 def unregister():
     bpy.utils.unregister_class(ApplyMaterialsOperator)
     bpy.utils.unregister_class(MaterialToolsPanel)
